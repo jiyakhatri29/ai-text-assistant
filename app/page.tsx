@@ -1,69 +1,96 @@
-import Image from "next/image";
+"use client";
+
+import { useState } from "react";
 
 export default function Home() {
+  const [text, setText] = useState("");
+  const [action, setAction] = useState("");
+  const [result, setResult] = useState("");
+
+
+  const handleSave = async () => {
+  try {
+    const response = await fetch("/api/process", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        text: text,
+        action: action,
+      }),
+    });
+
+    const data = await response.json();
+
+   if (!response.ok) {
+  console.error("API STATUS:", response.status);
+  console.error("API RESPONSE:", data);
+  alert(`API Error: ${response.status}`);
+  return;
+}
+
+setResult(data.result);
+  } catch (error) {
+    console.error("Error:", error);
+  }
+};
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert h-5 w-[100px]"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
+    <main className="min-h-screen bg-gray-100 flex items-center justify-center p-6">
+      <div className="w-full max-w-2xl bg-white rounded-2xl shadow-lg p-8">
+
+        <h1 className="text-3xl font-bold text-gray-900 mb-2">
+          AI Text Assistant
+        </h1>
+
+        <p className="text-gray-500 mb-6">
+          Write, translate, or improve your text.
+        </p>
+
+        <label className="block text-sm font-medium text-gray-700 mb-2">
+          Enter your text
+        </label>
+
+        <textarea
+          value={text}
+          onChange={(e) => setText(e.target.value)}
+          placeholder="Write your sentence here..."
+          className="w-full h-40 border border-gray-300 rounded-lg p-4 resize-none focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the{" "}
-            <code className="rounded bg-black/[.06] px-1.5 py-0.5 font-mono text-[0.9em] dark:bg-white/[.08]">
-              page.tsx
-            </code>{" "}
-            file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert h-[14px] w-4"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={14}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
+
+        <label className="block text-sm font-medium text-gray-700 mt-5 mb-2">
+          Select an action
+        </label>
+
+        <select
+          value={action}
+          onChange={(e) => setAction(e.target.value)}
+          className="w-full border border-gray-300 rounded-lg p-3 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+        >
+          <option value="">Select an option</option>
+          <option value="friendly">Friendly</option>
+          <option value="empathy">Empathy</option>
+          <option value="urgent">Urgent</option>
+          <option value="grammar">Fix Grammar</option>
+          <option value="formal">Make Formal</option>
+          <option value="simplify">Simplify Language</option>
+        </select>
+
+        <button
+          onClick={handleSave}
+          className="w-full mt-6 bg-blue-600 text-white py-3 rounded-lg font-medium hover:bg-blue-700 transition"
+        >
+          Save
+        </button>
+        {result && (
+  <div className="mt-6 p-4 rounded-lg bg-gray-50 border">
+    <h2 className="font-semibold mb-2">Result</h2>
+    <p className="text-gray-700">{result}</p>
+  </div>
+)}
+
+      </div>
+    </main>
   );
 }
