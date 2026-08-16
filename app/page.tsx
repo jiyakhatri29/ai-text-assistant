@@ -89,28 +89,34 @@ setResult(data.result);
   className="w-full border border-gray-300 rounded-lg p-3 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
 >
   <option value="en">English</option>
-  <option value="hi">Hindi</option>
-  <option value="bn">Bengali</option>
-  <option value="mr">Marathi</option>
-  <option value="gu">Gujarati</option>
-  <option value="pa">Punjabi</option>
-  <option value="ta">Tamil</option>
-  <option value="te">Telugu</option>
-  <option value="kn">Kannada</option>
-  <option value="ml">Malayalam</option>
-  <option value="ur">Urdu</option>
-  <option value="or">Odia</option>
-  <option value="fr">French</option>
-  <option value="es">Spanish</option>
-  <option value="de">German</option>
-  <option value="it">Italian</option>
-  <option value="pt">Portuguese</option>
-  <option value="tr">Turkish</option>
-  <option value="ar">Arabic</option>
-  <option value="ru">Russian</option>
-  <option value="ja">Japanese</option>
-  <option value="ko">Korean</option>
-  <option value="zh">Chinese</option>
+
+  <optgroup label="Indian Languages">
+    <option value="hi">Hindi</option>
+    <option value="bn">Bengali</option>
+    <option value="mr">Marathi</option>
+    <option value="gu">Gujarati</option>
+    <option value="pa">Punjabi</option>
+    <option value="ta">Tamil</option>
+    <option value="te">Telugu</option>
+    <option value="kn">Kannada</option>
+    <option value="ml">Malayalam</option>
+    <option value="ur">Urdu</option>
+    <option value="or">Odia</option>
+  </optgroup>
+
+  <optgroup label="International Languages">
+    <option value="fr">French</option>
+    <option value="es">Spanish</option>
+    <option value="de">German</option>
+    <option value="it">Italian</option>
+    <option value="pt">Portuguese</option>
+    <option value="tr">Turkish</option>
+    <option value="ar">Arabic</option>
+    <option value="ru">Russian</option>
+    <option value="ja">Japanese</option>
+    <option value="ko">Korean</option>
+    <option value="zh">Chinese</option>
+  </optgroup>
 </select>
 
         <button
