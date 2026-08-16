@@ -2,15 +2,41 @@ import { NextResponse } from "next/server";
 
 export async function POST(request: Request) {
   try {
-    const { text, action } = await request.json();
+    const { text, action,language } = await request.json();
 
-    if (!text || !action) {
-      return NextResponse.json(
-        { error: "Text and action are required" },
-        { status: 400 }
-      );
-    }
+    if (!text || !action || !language) {
+  return NextResponse.json(
+    { error: "Text, action, and language are required" },
+    { status: 400 }
+  );
+}
+const languageNames: Record<string, string> = {
+  en: "English",
+  hi: "Hindi",
+  bn: "Bengali",
+  mr: "Marathi",
+  gu: "Gujarati",
+  pa: "Punjabi",
+  ta: "Tamil",
+  te: "Telugu",
+  kn: "Kannada",
+  ml: "Malayalam",
+  ur: "Urdu",
+  or: "Odia",
+  fr: "French",
+  es: "Spanish",
+  de: "German",
+  it: "Italian",
+  pt: "Portuguese",
+  tr: "Turkish",
+  ar: "Arabic",
+  ru: "Russian",
+  ja: "Japanese",
+  ko: "Korean",
+  zh: "Chinese",
+};
 
+const selectedLanguage = languageNames[language];
     const apiKey = process.env.SARVAM_API_KEY;
 
     if (!apiKey) {
@@ -51,13 +77,25 @@ export async function POST(request: Request) {
 
     // Other text actions
     const prompts: Record<string, string> = {
-      friendly: "Rewrite this text in a friendly and warm tone. Keep the meaning the same.",
-      empathy: "Rewrite this text with empathy and understanding. Keep the meaning the same.",
-      urgent: "Rewrite this text to sound clear and urgent. Keep the meaning the same.",
-      grammar: "Fix the spelling and grammar of this text. Keep the meaning the same.",
-      formal: "Rewrite this text in a professional and formal tone. Keep the meaning the same.",
-      simplify: "Simplify this text so it is easy to understand. Keep the meaning the same.",
-    };
+  friendly:
+    "Rewrite the text in a friendly and warm tone. Return ONLY one final rewritten version. Do not provide alternatives, explanations, options, or extra text. Keep the original meaning.",
+
+  empathy:
+    "Rewrite the text with empathy and understanding. Return ONLY one final rewritten version. Do not provide alternatives, explanations, options, or extra text. Keep the original meaning.",
+
+  urgent:
+    "Rewrite the text in a clear and urgent tone. Return ONLY one final rewritten version. Do not provide alternatives, explanations, options, or extra text. Keep the original meaning.",
+
+  grammar:
+    "Correct the spelling and grammar. Return ONLY one final corrected version. Do not provide alternatives, explanations, options, or extra text. Keep the original meaning.",
+
+  formal:
+    "Rewrite the text in a professional and formal tone. Return ONLY one final rewritten version. Do not provide alternatives, explanations, options, or extra text. Keep the original meaning.",
+
+  simplify:
+    "Simplify the text so it is easy to understand. Return ONLY one final simplified version. Do not provide alternatives, explanations, options, or extra text. Keep the original meaning.",
+};
+    
 
     const prompt = prompts[action];
 
@@ -79,10 +117,10 @@ export async function POST(request: Request) {
      body: JSON.stringify({
   model: "sarvam-105b",
   messages: [
-    {
-      role: "system",
-      content: prompt,
-    },
+   {
+  role: "system",
+  content: `${prompt} Write the final answer in ${selectedLanguage}. Return only one final answer.`,
+},
     {
       role: "user",
       content: text,

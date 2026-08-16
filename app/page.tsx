@@ -6,7 +6,7 @@ export default function Home() {
   const [text, setText] = useState("");
   const [action, setAction] = useState("");
   const [result, setResult] = useState("");
-
+  const [language, setLanguage] = useState("en");
 
   const handleSave = async () => {
   try {
@@ -18,6 +18,8 @@ export default function Home() {
       body: JSON.stringify({
         text: text,
         action: action,
+        language: language,
+
       }),
     });
 
@@ -76,6 +78,40 @@ setResult(data.result);
           <option value="formal">Make Formal</option>
           <option value="simplify">Simplify Language</option>
         </select>
+
+        <label className="block text-sm font-medium text-gray-700 mt-5 mb-2">
+  Select Language
+</label>
+
+<select
+  value={language}
+  onChange={(e) => setLanguage(e.target.value)}
+  className="w-full border border-gray-300 rounded-lg p-3 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+>
+  <option value="en">English</option>
+  <option value="hi">Hindi</option>
+  <option value="bn">Bengali</option>
+  <option value="mr">Marathi</option>
+  <option value="gu">Gujarati</option>
+  <option value="pa">Punjabi</option>
+  <option value="ta">Tamil</option>
+  <option value="te">Telugu</option>
+  <option value="kn">Kannada</option>
+  <option value="ml">Malayalam</option>
+  <option value="ur">Urdu</option>
+  <option value="or">Odia</option>
+  <option value="fr">French</option>
+  <option value="es">Spanish</option>
+  <option value="de">German</option>
+  <option value="it">Italian</option>
+  <option value="pt">Portuguese</option>
+  <option value="tr">Turkish</option>
+  <option value="ar">Arabic</option>
+  <option value="ru">Russian</option>
+  <option value="ja">Japanese</option>
+  <option value="ko">Korean</option>
+  <option value="zh">Chinese</option>
+</select>
 
         <button
           onClick={handleSave}
